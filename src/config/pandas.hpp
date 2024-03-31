@@ -1523,6 +1523,11 @@
 	// 事件类型: Event / 事件名称: OnPCUnequipEvent
 	// 常量名称: NPCE_UNEQUIP / 变量名称: unequip_event_name
 	#define Pandas_NpcEvent_UNEQUIP
+
+	// 当和NPC对话超时玩家触发事件 [木蚂蚁]
+	// 事件类型: Event / 事件名称: OnNPCTimeOffEvent
+	// 常量名称: NPCE_NpcTimeOff / 变量名称: npctimeoff_event_name
+	#define Pandas_NpcEvent_NPCTIMEOFF
 	// PYHELP - NPCEVENT - INSERT POINT - <Section 7>
 
 	/************************************************************************/

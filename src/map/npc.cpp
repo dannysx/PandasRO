@@ -1429,6 +1429,12 @@ struct npc_data* npc_name2id(const char* name)
 /**
  * Timer to check for idle time and timeout the dialog if necessary
  **/
+//Pandas_NpcEvent_NPCTIMEOFF
+TIMER_FUNC(pctimerout_close_npc){
+	TBL_PC *sd = map_id2sd(id);
+	npc_script_event(sd, NPCE_NPCTIMEOFF);
+	return 0;
+}
 TIMER_FUNC(npc_secure_timeout_timer){
 	map_session_data* sd = NULL;
 	unsigned int timeout = NPC_SECURE_TIMEOUT_NEXT;
@@ -1453,6 +1459,9 @@ TIMER_FUNC(npc_secure_timeout_timer){
 	}
 
 	if( DIFF_TICK(cur_tick,sd->npc_idle_tick) > (timeout*1000) ) {
+#ifdef Pandas_NpcEvent_NPCTIMEOFF
+		add_timer(gettick()+500,pctimerout_close_npc,sd->bl.id,0);
+#endif // Pandas_NpcEvent_NPCTIMEOFF
 		pc_close_npc(sd,1);
 	} else if(sd->st && (sd->st->state == END || sd->st->state == CLOSE)){
 		// stop timer the script is already ending
@@ -7042,6 +7051,11 @@ const char *npc_get_script_event_name(int npce_index)
 	case NPCE_UNEQUIP:
 		return script_config.unequip_event_name;	// OnPCUnequipEvent		// 当玩家成功脱下一件装备时触发事件
 #endif // Pandas_NpcEvent_UNEQUIP
+
+#ifdef Pandas_NpcEvent_NPCTIMEOFF
+	case NPCE_NPCTIMEOFF:
+		return script_config.npctimeoff_event_name;	// 当NPC对话超时玩家触发事件 [木蚂蚁]
+#endif // Pandas_NpcEvent_NPCTIMEOFF
 	// PYHELP - NPCEVENT - INSERT POINT - <Section 9>
 
 	/************************************************************************/

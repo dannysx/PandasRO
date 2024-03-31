@@ -168,6 +168,10 @@
 #ifdef Pandas_NpcEvent_UNEQUIP
 	export_constant(NPCE_UNEQUIP);	// unequip_event_name	// OnPCUnequipEvent		// 当玩家成功脱下一件装备时触发事件
 #endif // Pandas_NpcEvent_UNEQUIP
+
+#ifdef Pandas_NpcEvent_NPCTIMEOFF
+	export_constant(NPCE_NPCTIMEOFF);	// 当NPC对话超时玩家触发事件 [木蚂蚁]
+#endif // Pandas_NpcEvent_NPCTIMEOFF
 	// PYHELP - NPCEVENT - INSERT POINT - <Section 12>
 
 	/************************************************************************/
