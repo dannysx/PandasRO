@@ -26,6 +26,10 @@
 #include "map_artisan.hpp"
 #endif // Pandas
 
+#ifdef MUMAYI_CUSTOM
+#include <unordered_set>
+#endif // MUMAYI_CUSTOM
+
 #ifdef Pandas_InterConfig_HideServerIpAddress
 	extern int pandas_inter_hide_server_ipaddress;
 #endif // Pandas_InterConfig_HideServerIpAddress
@@ -805,6 +809,12 @@ enum e_mapflag : int16 {
 	MF_NOATTACK2,
 #endif // Pandas_MapFlag_NoAttack2
 	// PYHELP - MAPFLAG - INSERT POINT - <Section 2>
+
+#ifdef MUMAYI_CUSTOM
+	MF_NOSKILLS,
+	MF_ONLYSKILLS,
+#endif // MUMAYI_CUSTOM
+
 	MF_MAX
 };
 
@@ -1028,6 +1038,11 @@ struct map_data {
 	void setMapFlag(int flag, int value);
 	void initMapFlags();
 	void copyFlags(const map_data& other);
+
+#ifdef MUMAYI_CUSTOM
+	std::unordered_set<int32_t> noSkillIds;
+	std::unordered_set<int32_t> onlySkillIds;
+#endif // MUMAYI_CUSTOM
 
 private:
 	std::vector<int> flags;

@@ -6164,6 +6164,37 @@ static const char* npc_parse_mapflag(char* w1, char* w2, char* w3, char* w4, con
 			break;
 		}
 
+#ifdef MUMAYI_CUSTOM
+		case MF_NOSKILLS:
+		case MF_ONLYSKILLS:
+		{
+			auto& SplitString = [](const std::string& str, const std::string& split, std::vector<std::string>& res)
+			{
+				char* strc = new char[str.size() + 1];
+				strcpy(strc, str.c_str());
+				char* temp = strtok(strc, split.c_str());
+				while (temp != NULL)
+				{
+					res.push_back(std::string(temp));
+					temp = strtok(NULL, split.c_str());
+				}
+				delete[] strc;
+			};
+
+			if (w4 != '\0')
+			{
+				std::vector<std::string> skills;
+				SplitString(w4, ":", skills);
+
+				pds_mapflag_args args = {};
+				for (std::string& str : skills)
+					args.input.push_back(atoi(str.c_str()));
+				map_setmapflag_sub(m, mapflag, true, &args);
+			}
+		}
+		break;
+#endif // MUMAYI_CUSTOM
+
 		// All others do not need special treatment
 		default:
 #ifdef Pandas_Mapflags

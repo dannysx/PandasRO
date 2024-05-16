@@ -5369,6 +5369,12 @@ int map_getmapflag_sub(int16 m, enum e_mapflag mapflag, pds_mapflag_args *args)
 				default:
 					return mapdata->getMapFlag(mapflag);
 			}
+#ifdef MUMAYI_CUSTOM
+		case MF_NOSKILLS:
+			return args && mapdata->noSkillIds.count(args->flag_val);
+		case MF_ONLYSKILLS:
+			return args && mapdata->onlySkillIds.count(args->flag_val);
+#endif // MUMAYI_CUSTOM
 		default:
 			return mapdata->getMapFlag(mapflag);
 	}
@@ -5639,6 +5645,28 @@ bool map_setmapflag_sub(int16 m, enum e_mapflag mapflag, bool status, pds_mapfla
 			}
 			mapdata->setMapFlag(mapflag, status);
 			break;
+#ifdef MUMAYI_CUSTOM
+		case MF_NOSKILLS:
+		{
+			if (status == true)
+				mapdata->noSkillIds.insert(args->input.begin(), args->input.end());
+			else
+				mapdata->noSkillIds.clear();
+
+			mapdata->setMapFlag(mapflag, status);
+		}
+		break;
+		case MF_ONLYSKILLS:
+		{
+			if (status == true)
+				mapdata->onlySkillIds.insert(args->input.begin(), args->input.end());
+			else
+				mapdata->onlySkillIds.clear();
+
+			mapdata->setMapFlag(mapflag, status);
+		}
+		break;
+#endif // MUMAYI_CUSTOM
 		default:
 			mapdata->setMapFlag(mapflag, status);
 			break;

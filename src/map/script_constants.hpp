@@ -881,6 +881,11 @@
 	export_constant(MF_NOATTACK2);
 #endif // Pandas_MapFlag_NoAttack2
 
+#ifdef MUMAYI_CUSTOM
+	export_constant(MF_NOSKILLS);
+	export_constant(MF_ONLYSKILLS);
+#endif // MUMAYI_CUSTOM
+
 	// PYHELP - MAPFLAG - INSERT POINT - <Section 3>
 
 	/* setcell types */

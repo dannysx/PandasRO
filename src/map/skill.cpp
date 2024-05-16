@@ -853,6 +853,22 @@ int8 skill_isCopyable(map_session_data *sd, uint16 skill_id) {
 	return 0;
 }
 
+#ifdef MUMAYI_CUSTOM
+bool SkillCanBeUsedOnMap(int skillId, int16_t m)
+{
+	pds_mapflag_args args = {};
+	args.flag_val = skillId;
+
+	if (map_getmapflag_sub(m, MF_NOSKILLS, &args) != 0)
+		return false;
+
+	if (map_getmapflag_sub(m, MF_ONLYSKILLS, &args) != 0)
+		return true;
+
+	return map[m].getMapFlag(MF_ONLYSKILLS) ? false : true;
+}
+#endif // MUMAYI_CUSTOM
+
 /**
  * Check if the skill is ok to cast and when.
  * Done before skill_check_condition_castbegin, requirement
@@ -875,6 +891,11 @@ bool skill_isNotOk(uint16 skill_id, map_session_data *sd)
 
 	if (mapdata->getMapFlag(MF_NOSKILL) && skill_id != ALL_EQSWITCH && !sd->skillitem) //Item skills bypass noskill
 		return true;
+
+#ifdef MUMAYI_CUSTOM
+	if (!sd->skillitem && SkillCanBeUsedOnMap(skill_id, sd->bl.m) == false)
+		return true;
+#endif // MUMAYI_CUSTOM
 
 	// Epoque:
 	// This code will compare the player's attack motion value which is influenced by ASPD before
